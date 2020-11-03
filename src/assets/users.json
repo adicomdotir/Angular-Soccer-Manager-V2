@@ -1,0 +1,17 @@
+[
+    {
+        "name": "User 1",
+        "age": 18,
+        "role": "user"
+    },
+    {
+        "name": "User 2",
+        "age": 28,
+        "role": "employee"
+    },
+    {
+        "name": "User 3",
+        "age": 38,
+        "role": "admin"
+    }
+]
