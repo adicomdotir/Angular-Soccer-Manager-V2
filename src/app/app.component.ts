@@ -22,6 +22,10 @@ export class AppComponent implements OnInit {
         this.gameEngine.gameProcess();
         this.createTournament();
         this.buttonMessage = 'World Cup ' + convertNumberToRomanNumerals(this.gameEngine.tournaments.length + 1);
+        this.localRanking = [];
+        for (let i = 0; i < this.gameEngine.teams.length; i++) {
+            this.localRanking.push(this.gameEngine.teams[i].name);
+        }
     }
 
     createTournament() {
@@ -43,6 +47,7 @@ class GameEngine {
     matches: Match[] = [];
     reports: Report[] = [];
     schedule = [];
+    hallOfFames: HallOfFame[] = [];
 
     constructor() {
         this.generateTeams();
@@ -53,6 +58,7 @@ class GameEngine {
         this.tournaments.push(tournament);
 
         this.schedule = [];
+        this.teams.sort((a, b) => b.rankingPower - a.rankingPower);
         for (let i = 0; i < this.teams.length; i++) {
             this.schedule.push(this.teams[i].id);
         }
@@ -76,6 +82,7 @@ class GameEngine {
     }
 
     gameProcess() {
+        let indexRanking = 63;
         const tournamentId = this.getLastTournamentId();
         let matchLevel = 0;
         while (this.schedule.length > 1) {
@@ -106,15 +113,24 @@ class GameEngine {
 
                 if (rndHome > rndAway) {
                     localSchedule.push(teamHome.id);
-                } else {
-                    if (rndHome === rndAway) {
-                        if (teamHome.rankingPower > teamAway.rankingPower) {
-                            rndAway += 1;
-                        } else {
-                            rndHome += 1;
-                        }
-                    }
+                    teamAway.rankingPower = 100 - indexRanking;
+                    indexRanking -= 1;
+                } else if (rndAway > rndHome) {
                     localSchedule.push(teamAway.id);
+                    teamHome.rankingPower = 100 - indexRanking;
+                    indexRanking -= 1;
+                } else if (rndHome === rndAway) {
+                    if (teamHome.rankingPower > teamAway.rankingPower) {
+                        rndAway += 1;
+                        localSchedule.push(teamAway.id);
+                        teamHome.rankingPower = 100 - indexRanking;
+                        indexRanking -= 1;
+                    } else {
+                        rndHome += 1;
+                        localSchedule.push(teamAway.id);
+                        teamHome.rankingPower = 100 - indexRanking;
+                        indexRanking -= 1;
+                    }
                 }
 
                 const match = new Match(tournamentId);
@@ -124,22 +140,35 @@ class GameEngine {
                 match.awayTeamGoal = rndAway;
                 match.level = matchLevel;
                 this.matches.push(match);
-                // this.reports.push(`${teamHome.name}(${teamHome.overall}) ` +
-                //     `[${chanceHome}]${rndHome}-${rndAway}[${chanceAway}]` +
-                //     ` (${teamAway.overall})${teamAway.name}`);
-                // this.reports.push(...tmpReport);
-                // this.reports.push('******');
             }
             this.schedule = localSchedule;
+            this.teams.find(x => x.id === this.schedule[0]).rankingPower = 100;
         }
+        this.hallOfFames.push(new HallOfFame(this.schedule[0], tournamentId));
     }
 
     getTeamName(teamId) {
         return this.teams.find(x => x.id === teamId).name;
     }
 
+    getTournamentId(tourId) {
+        return this.tournaments.find(x => x.id === tourId).name;
+    }
+
     getLastTournamentId() {
         return this.tournaments[this.tournaments.length - 1].id;
+    }
+}
+
+class HallOfFame {
+    champion: string;
+    runner: string;
+    tournamentName: string;
+
+
+    constructor(champion: string, tournamentName: string) {
+        this.champion = champion;
+        this.tournamentName = tournamentName;
     }
 }
 
