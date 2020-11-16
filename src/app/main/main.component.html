@@ -1,0 +1,32 @@
+<button (click)="next()">END {{engine.year}}</button>
+<div style="margin: 32px">
+    <table class="pure-table">
+
+        <thead>
+            <tr>
+                <th>ID</th>
+                <th>NAME</th>
+                <th>PRICE</th>
+                <th>TRANSFER MARKET</th>
+            </tr>
+        </thead>
+        <tbody>
+
+            <tr *ngFor="let itm of engine.teams">
+                <td>{{itm.id}}</td>
+                <td>
+                    <a routerLink="players/{{itm.id}}">{{itm.name}}</a>
+                </td>
+                <td>{{itm.price}}</td>
+                <td>{{itm.transferManager}}</td>
+            </tr>
+        </tbody>
+    </table>
+</div>
+<div style="margin: 32px">
+    <table style="width: 100%">
+        <tr *ngFor="let itm of engine.transferLog">
+            <td>{{itm}}</td>
+        </tr>
+    </table>
+</div>

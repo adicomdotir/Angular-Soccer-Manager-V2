@@ -1,0 +1,17 @@
+<div class="Row">
+    <div class="Column" style="width: 25%"></div>
+    <div class="Column">
+        <div>{{player.fullName}} - {{player.birth}}</div>
+        <table style="width: 50%;">
+            <tr>
+                <th>Year</th>
+                <th>TeamId</th>
+            </tr>
+            <tr *ngFor="let ph of playerHistories">
+                <td>{{ph.year}}</td>
+                <td>{{ph.teamId}}</td>
+            </tr>
+        </table>
+    </div>
+    <div class="Column" style="width: 25%"></div>
+</div>
