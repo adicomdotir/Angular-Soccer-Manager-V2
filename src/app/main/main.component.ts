@@ -24,6 +24,7 @@ export class Engine {
     public teams: Array<Team> = [];
     public players: Array<Player> = [];
     public transferLog: Array<string> = [];
+    public playerToSell: Array<string> = [];
     private retiredPlayers: Array<Player> = [];
     private sellList: Array<Player> = [];
     public year: number;
@@ -35,7 +36,7 @@ export class Engine {
             const tmpTm = new Team(IdGenerator.getId(), TeamNames[i]);
             for (let j = 0; j < 11; j++) {
                 const age = Math.floor(Math.random() * 17) + 18;
-                const tmpPl = new Player(IdGenerator.getId(), NameGenerator.getFullName(), tmpTm.id, this.year - age, this.year);
+                const tmpPl = new Player(IdGenerator.getId(), NameGenerator.getFullName(), tmpTm.id, this.year - age, this.year, tmpTm.name);
                 this.players.push(tmpPl);
             }
             this.teams.push(tmpTm);
@@ -61,6 +62,7 @@ export class Engine {
     private removeRetiredPlayer() {
         const removeIndex = [];
         this.players.forEach((x, index) => {
+            x.calculatePrice(this.year);
             if (this.year - x.birth > 37) {
                 this.retiredPlayers.push(x);
                 removeIndex.push(index);
@@ -87,16 +89,18 @@ export class Engine {
 
     private addHistory() {
         this.players.forEach(x => {
-            x.histories.push(new PlayerHistory(this.year, x.teamId));
+            console.error(x.teamName)
+            x.histories.push(new PlayerHistory(this.year, x.teamId, x.teamName));
         });
     }
 
     private transfer() {
         this.transferLog = [];
+        this.playerToSell = [];
         // Add young player per team
         for (let i = 0; i < this.teams.length; i++) {
             const tmpId = (this.players.length + 1);
-            const newPlayer = new Player(IdGenerator.getId(), NameGenerator.getFullName(), '', this.year - 18, this.year);
+            const newPlayer = new Player(IdGenerator.getId(), NameGenerator.getFullName(), '', this.year - 18, this.year, '');
             this.players.push(newPlayer);
         }
         for (let i = 0; i < this.teams.length; i++) {
@@ -107,7 +111,7 @@ export class Engine {
                     const index = Math.floor(Math.random() * tmpPlayers.length);
                     if (this.sellList.findIndex(x => x.id === tmpPlayers[index].id) === -1) {
                         this.sellList.push(tmpPlayers[index]);
-                        tmpPlayers[index].calculatePrice(this.year);
+                        this.playerToSell.push(`${tmpPlayers[index].fullName} FROM ${tmpPlayers[index].teamName}`);
                     }
                 }
             }
@@ -120,7 +124,7 @@ export class Engine {
             const plIndex = Math.floor(Math.random() * this.sellList.length);
             const newTeam = this.teams[tmIndex];
             const oldTeam = this.teams.filter(x => x.id === this.sellList[plIndex].teamId)[0];
-            if (newTeam.id !== this.sellList[plIndex].teamId && newTeam.price >= newTeam.transferManager * 50000) {
+            if (newTeam.id !== this.sellList[plIndex].teamId && newTeam.price >= newTeam.transferManager * 30000) {
                 const oldTeamName = oldTeam != null ? oldTeam.name : 'Free';
                 this.transferLog.push(`${this.sellList[plIndex].fullName} MOVE From ${oldTeamName} To ${newTeam.name}`);
                 newTeam.price -= this.sellList[plIndex].price;
@@ -129,6 +133,7 @@ export class Engine {
                 }
                 this.sellList[plIndex].teamId = newTeam.id;
                 this.sellList[plIndex].histories[this.sellList[plIndex].histories.length - 1].teamId = newTeam.id;
+                this.sellList[plIndex].histories[this.sellList[plIndex].histories.length - 1]. teamName = newTeam.name;
                 this.sellList.splice(plIndex, 1);
                 tryCounter = 0;
             }
@@ -179,10 +184,11 @@ export class Player {
     attributes: number[] = [];
     overall: number;
     teamId: string;
+    teamName: string;
     price: number;
     histories: Array<PlayerHistory> = [];
 
-    constructor(id: string, name: string, teamId: string, birth: number, year: number) {
+    constructor(id: string, name: string, teamId: string, birth: number, year: number, teamName) {
         this.id = id;
         this.fullName = name;
         this.birth = birth;
@@ -195,21 +201,24 @@ export class Player {
         });
         this.overall = Math.round(this.overall / this.attributesName.length);
         this.calculatePrice(year);
-        this.histories.push(new PlayerHistory(year, teamId));
+        this.histories.push(new PlayerHistory(year, teamId, teamName));
+        this.teamName = teamName;
     }
 
     calculatePrice(year) {
-        this.price = Math.round((this.overall * 1000) * (29 / Math.abs(this.birth - year)));
+        this.price = Math.round((this.overall * 100) * (38 - Math.abs(this.birth - year)));
     }
 }
 
 export class PlayerHistory {
     year: number;
     teamId: string;
+    teamName: string;
 
-    constructor(year: number, teamId: string) {
+    constructor(year: number, teamId: string, teamName: string) {
         this.year = year;
         this.teamId = teamId;
+        this.teamName = teamName;
     }
 }
 
@@ -524,7 +533,6 @@ const TeamNames = [
     'Aboomoslem',
     'Sanat Naft',
     'Esteghlal Ahvaz',
-    'PAS Tehran',
     'Bargh Shiraz',
     'Damash',
     'Shahr Khodro',
@@ -534,7 +542,7 @@ const TeamNames = [
     'Shahin Bushehr',
     'Pars Jonoubi Jam',
     'Naft Masjed Soleyman',
-    'Steel Azin11',
+    'Steel Azin',
     'Machine Sazi',
     'Nassaji Mazandaran',
     'Shamoushak Noshahr',

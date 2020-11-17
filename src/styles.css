@@ -1,6 +1,10 @@
 /* You can add global styles to this file, and also import other style files */
-@import url('https://fonts.googleapis.com/css2?family=Slabo+27px&display=swap');
+
+@font-face {
+    font-family: 'alegreya';
+    src: url("assets/fonts/alegreya.ttf");
+}
 
 * {
-    font-family: 'Slabo 27px', serif;
+    font-family: 'alegreya';
 }

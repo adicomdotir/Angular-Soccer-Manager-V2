@@ -1,0 +1,5 @@
+<b>{{player.fullName}}</b> - <span>{{player.birth}} ({{engine.year - player.birth}} years old)</span>
+<div>Overall: {{player.overall}}</div>
+<div>Price: {{player.price}}</div>
+<div *ngFor="let att of player.attributesName; let i = index;">{{att}} = {{getAttribute(i)}}</div>
+<a routerLink="../history/{{playerId}}">History</a>

@@ -8,13 +8,15 @@ import { MainComponent } from './main/main.component';
 import {AppRoutingModule} from './app-routing.module';
 import {CommonModule} from '@angular/common';
 import { PlayersComponent } from './players/players.component';
+import { PlayerDetailComponent } from './player-detail/player-detail.component';
 
 @NgModule({
     declarations: [
         AppComponent,
         PlayerHistoryComponent,
         MainComponent,
-        PlayersComponent
+        PlayersComponent,
+        PlayerDetailComponent
     ],
     imports: [
         BrowserModule,

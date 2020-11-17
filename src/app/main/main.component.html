@@ -1,4 +1,6 @@
-<button (click)="next()">END {{engine.year}}</button>
+
+
+<button  class="pure-button"(click)="next()">END {{engine.year}}</button>
 <div style="margin: 32px">
     <table class="pure-table">
 
@@ -23,10 +25,19 @@
         </tbody>
     </table>
 </div>
-<div style="margin: 32px">
-    <table style="width: 100%">
-        <tr *ngFor="let itm of engine.transferLog">
-            <td>{{itm}}</td>
-        </tr>
-    </table>
+<div>
+    <div style="margin: 32px">
+        <table style="width: 100%">
+            <tr *ngFor="let itm of engine.transferLog">
+                <td>{{itm}}</td>
+            </tr>
+        </table>
+    </div>
+    <div style="margin: 32px">
+        <table style="width: 100%">
+            <tr *ngFor="let itm of engine.playerToSell">
+                <td>{{itm}}</td>
+            </tr>
+        </table>
+    </div>
 </div>

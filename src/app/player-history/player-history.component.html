@@ -1,17 +1,20 @@
-<div class="Row">
-    <div class="Column" style="width: 25%"></div>
-    <div class="Column">
-        <div>{{player.fullName}} - {{player.birth}}</div>
-        <table style="width: 50%;">
+
+<div>
+    <div>{{player.fullName}} - {{player.birth}}</div>
+    <table class="pure-table pure-table-bordered">
+        <thead>
             <tr>
                 <th>Year</th>
+                <th>TeamName</th>
                 <th>TeamId</th>
             </tr>
+        </thead>
+        <tbody>
             <tr *ngFor="let ph of playerHistories">
                 <td>{{ph.year}}</td>
+                <td>{{ph.teamName}}</td>
                 <td>{{ph.teamId}}</td>
             </tr>
-        </table>
-    </div>
-    <div class="Column" style="width: 25%"></div>
+        </tbody>
+    </table>
 </div>
