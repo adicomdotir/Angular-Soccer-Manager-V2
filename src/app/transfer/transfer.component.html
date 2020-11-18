@@ -1,0 +1,32 @@
+<div>
+    <div style="margin: 32px">
+        <h3>Top Transfer</h3>
+        <table style="width: 100%">
+            <tr *ngFor="let itm of transferLog">
+                <td><a routerLink="../player/{{itm[0]}}">{{getPlayerName(itm[0])}}</a> From
+                    <a routerLink="../players/{{itm[1]}}">{{getTeamName(itm[1])}}</a> To
+                    <a routerLink="../players/{{itm[2]}}">{{getTeamName(itm[2])}}</a></td>
+            </tr>
+        </table>
+    </div>
+    <div style="margin: 32px">
+        <h3>Player in TransferList</h3>
+        <table style="width: 100%">
+            <tr *ngFor="let itm of playerToSell">
+                <td><a routerLink="../player/{{itm[0]}}">{{getPlayerName(itm[0])}}</a> From
+                    <a routerLink="../players/{{itm[1]}}">{{getTeamName(itm[1])}}</a></td>
+            </tr>
+        </table>
+    </div>
+    <div style="margin: 32px">
+        <h3>Free Transfer Players</h3>
+        <table style="width: 100%">
+            <tr *ngFor="let itm of freePlayers">
+                <td><a routerLink="../player/{{itm.id}}">{{itm.fullName}}</a></td>
+                <td>{{itm.birth}}</td>
+                <td>{{itm.overall}}</td>
+                <td>{{itm.price}}</td>
+            </tr>
+        </table>
+    </div>
+</div>

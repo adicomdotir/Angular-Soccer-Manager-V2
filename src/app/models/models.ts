@@ -1,6 +1,4 @@
 import {convertNumberToRomanNumerals, generateId, random} from '../helpers';
-import {Names} from '../data/names';
-
 export class Models {
 
 }
@@ -35,7 +33,7 @@ export class Player {
     constructor(teamId) {
         this.age = random(20) + 18;
         this.id = generateId();
-        this.name = Names.getRandomName();
+        // this.name = LocalData.getRandomName();
         this.overall = random(50);
         this.teamId = teamId;
     }

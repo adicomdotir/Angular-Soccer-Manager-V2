@@ -4,6 +4,7 @@ import {MainComponent} from './main/main.component';
 import {PlayerHistoryComponent} from './player-history/player-history.component';
 import {PlayersComponent} from './players/players.component';
 import {PlayerDetailComponent} from './player-detail/player-detail.component';
+import { TransferComponent } from './transfer/transfer.component';
 
 const routes: Routes = [
     {
@@ -17,6 +18,9 @@ const routes: Routes = [
     },
     {
         path: 'players/:id', component: PlayersComponent
+    },
+    {
+        path: 'transfer', component: TransferComponent
     }
 ];
 

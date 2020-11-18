@@ -9,6 +9,7 @@ import {AppRoutingModule} from './app-routing.module';
 import {CommonModule} from '@angular/common';
 import { PlayersComponent } from './players/players.component';
 import { PlayerDetailComponent } from './player-detail/player-detail.component';
+import { TransferComponent } from './transfer/transfer.component';
 
 @NgModule({
     declarations: [
@@ -16,7 +17,8 @@ import { PlayerDetailComponent } from './player-detail/player-detail.component';
         PlayerHistoryComponent,
         MainComponent,
         PlayersComponent,
-        PlayerDetailComponent
+        PlayerDetailComponent,
+        TransferComponent
     ],
     imports: [
         BrowserModule,

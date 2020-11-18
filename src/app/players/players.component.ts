@@ -16,6 +16,9 @@ export class PlayersComponent implements OnInit {
 
     constructor(public activatedRoute: ActivatedRoute) {
         this.teamId = this.activatedRoute.snapshot.paramMap.get('id');
+         if (this.teamId === 'Free') {
+             this.teamId = '';
+         }
     }
 
     ngOnInit() {
